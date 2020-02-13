@@ -1,0 +1,41 @@
+plugins {
+    id "com.github.dcendents.android-maven" version "2.0"
+}
+apply plugin: 'com.android.library'
+
+group=SDK3RD_GROUP
+version=SDK3RD_VERSION
+archivesBaseName='sdk3rd-social'
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+
+    api "com.android.support:support-fragment:$supportVersion"
+    api "com.android.support:support-annotations:$supportVersion"
+
+    compileOnly project(":ezy.sdk3rd.3rd-alipay")
+    compileOnly project(":ezy.sdk3rd.3rd-qq")
+
+    compileOnly 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
+    compileOnly 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6'
+}

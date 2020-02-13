@@ -1,0 +1,37 @@
+plugins {
+    id "com.github.dcendents.android-maven" version "2.0"
+}
+apply plugin: 'com.android.library'
+
+group=SDK3RD_GROUP
+version=SDK3RD_VERSION
+archivesBaseName='sdk3rd-qq'
+
+
+
+
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+afterEvaluate {
+    tasks.each {
+        if (it.name.contains("Test")) {
+            it.enabled = false
+        }
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+}

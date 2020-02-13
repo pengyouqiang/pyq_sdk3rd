@@ -1,0 +1,73 @@
+apply plugin: 'com.android.application'
+
+def addFieldsAndPlaceholders = { flavor, items ->
+    for (def item : items) {
+        flavor.buildConfigField "String", item.key, '"' + item.value + '"'
+    }
+    flavor.addManifestPlaceholders(items)
+}
+android {
+    compileSdkVersion compile_sdk_version
+
+    defaultConfig {
+        applicationId APPLICATION_ID
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode 1000
+        versionName "1.0.0"
+
+        println("===> " + APPID_QQ)
+        println("===> " + APPID_WEIXIN)
+        println("===> " + APPID_WEIBO)
+
+        addFieldsAndPlaceholders(it, [
+                APPID_QQ        : APPID_QQ,
+                APPID_WEIXIN    : APPID_WEIXIN,
+                APPID_WEIBO     : APPID_WEIBO,
+
+        ])
+
+    }
+
+    dataBinding {
+        enabled = true
+    }
+    signingConfigs {
+        release {
+            keyAlias SINGING_ALIAS
+            keyPassword SINGING_PASSWORD
+            storeFile file(SINGING_FILE)
+            storePassword SINGING_PASSWORD
+            v2SigningEnabled false
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/thelasterstar/maven/" }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+
+
+    implementation project(':ezy.sdk3rd.social')
+
+    implementation project(':ezy.sdk3rd.3rd-alipay')
+    implementation project(':ezy.sdk3rd.3rd-qq')
+
+    implementation 'com.sina.weibo.sdk:core:2.0.3:openDefaultRelease@aar'
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:5.1.6'
+}
