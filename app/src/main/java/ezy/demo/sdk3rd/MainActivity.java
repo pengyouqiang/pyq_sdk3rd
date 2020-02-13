@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AuthorizeSDK.setDefaultCallback(new DefaultCallback("auth"));
 
 
+
+
         binding.setOnShare(this);
         binding.setOnAuth(new View.OnClickListener() {
             @Override
